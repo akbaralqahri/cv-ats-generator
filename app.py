@@ -41,10 +41,13 @@ def main():
         # -----------------------------
 
         st.markdown("---")
-        st.markdown("Made with ❤️ using Streamlit & Python")
+        st.markdown(
+            "<p style='text-align: center; font-size: 12px;'>© 2025 @akbaralqahri. All rights reserved.</p>",
+            unsafe_allow_html=True
+        )
+
 
     st.title("📄 LaTeX Resume Generator")
-    st.markdown("Buat resume profesional standar ATS (Applicant Tracking System) tanpa perlu coding LaTeX manual.")
 
     # --- FORM INPUT ---
     with st.form("resume_form"):
@@ -131,7 +134,7 @@ def main():
 
         # --- ACHIEVEMENTS (Dynamic) ---
         st.markdown("---")
-        st.subheader("6. Prestasi (Achievements) (Max 5)")
+        st.subheader("6. Prestasi (Max 5)")
         ach_list = []
         for i in range(st.session_state.ach_count):
             ach = st.text_input(f"Prestasi #{i+1}", key=f"ach_{i}", placeholder="Juara 1 Hackathon Nasional 2024")
@@ -147,7 +150,7 @@ def main():
 
         # --- SKILLS (Dynamic) ---
         st.markdown("---")
-        st.subheader("7. Keahlian (Skills) (Max 5)")
+        st.subheader("7. Keahlian (Max 5)")
         skills_data = []
         for i in range(st.session_state.skill_count):
             st.markdown(f"**Skill Group #{i+1}**")
