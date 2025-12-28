@@ -173,8 +173,12 @@ def generate_projects(project_list):
     latex += "\\resumeSubHeadingListEnd\n"
     return latex
 
-def generate_skills(skills_data):
-    if not any(skills_data.values()):
+def generate_skills(skills_list):
+    """
+    Mengenerate section skills secara dinamis dari list.
+    skills_list structure: [{'category': '...', 'details': '...'}]
+    """
+    if not skills_list:
         return ""
     
     latex = r"""
@@ -184,15 +188,16 @@ def generate_skills(skills_data):
   \small{
     \item{
 """
-    if skills_data['data_analysis']:
-        latex += f"     \\textbf{{Data Analysis:}} {escape_latex(skills_data['data_analysis'])} \\\\\n"
-    if skills_data['ml']:
-        latex += f"     \\textbf{{Machine Learning:}} {escape_latex(skills_data['ml'])} \\\\\n"
-    if skills_data['ai']:
-        latex += f"     \\textbf{{AI \\& Automation:}} {escape_latex(skills_data['ai'])} \\\\\n"
-    if skills_data['business']:
-        latex += f"     \\textbf{{Business Skills:}} {escape_latex(skills_data['business'])}\n"
-    
+    for skill in skills_list:
+        category = escape_latex(skill['category'])
+        details = escape_latex(skill['details'])
+        
+        # Jika ada kategori, bold kategorinya. Jika tidak, tulis skillnya saja.
+        if category:
+            latex += f"     \\textbf{{{category}:}} {details} \\\\\n"
+        else:
+            latex += f"     {details} \\\\\n"
+
     latex += r"""    }
   }
 \end{itemize}

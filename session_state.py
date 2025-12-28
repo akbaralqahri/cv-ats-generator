@@ -6,6 +6,7 @@ def init_session_state():
         'edu_count': 1,
         'exp_count': 1,
         'proj_count': 1,
+        'skill_count': 1,  # Tambahan baru untuk Skills
         'cert_count': 1,
         'lang_count': 1
     }

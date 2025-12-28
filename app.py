@@ -13,7 +13,7 @@ st.set_page_config(
 def main():
     init_session_state()
 
-    # Sidebar: Instruksi
+    # Sidebar: Instruksi & Privasi
     with st.sidebar:
         st.header("📌 Cara Penggunaan")
         st.info("""
@@ -25,10 +25,23 @@ def main():
         6. **Paste & Compile**: Tempel kode di editor Overleaf dan klik 'Recompile'.
         7. **Download PDF**: Unduh hasil resume PDF Anda.
         """)
-        st.warning("⚠️ Fitur: Maksimal 5 item untuk Pendidikan, Pengalaman, dan Project agar muat di 1 halaman.")
+        
+        st.warning("⚠️ Fitur: Maksimal 5 item untuk Pendidikan, Pengalaman, Project, dan Skills agar muat di 1 halaman.")
+        
+        # --- TAMBAHAN PESAN PRIVASI ---
         st.markdown("---")
-        st.markdown("© 2025 @akbaralqahri | Developed for research and educational purposes.")
+        st.subheader("🔒 Jaminan Privasi")
+        st.caption("""
+        Kami **tidak menyimpan** data pribadi Anda ke dalam database.
+        
+        Sederhananya, sistem hanya memproses data Anda untuk menghasilkan kode LaTeX secara instan. Tidak ada data yang disimpan, sehingga semuanya akan terhapus otomatis saat halaman di-refresh.
+        
+        Aplikasi ini bersifat *Open Source*, kode dapat diperiksa untuk transparansi.
+        """)
+        # -----------------------------
 
+        st.markdown("---")
+        st.markdown("Made with ❤️ using Streamlit & Python")
 
     st.title("📄 LaTeX Resume Generator")
     st.markdown("Buat resume profesional standar ATS (Applicant Tracking System) tanpa perlu coding LaTeX manual.")
@@ -116,18 +129,25 @@ def main():
             manage_count('proj_count', 'add')
             st.rerun()
 
-        # --- SKILLS ---
+        # --- SKILLS (Dynamic) ---
         st.markdown("---")
-        st.subheader("6. Keahlian (Skills)")
-        sk1, sk2 = st.columns(2)
-        s_data = sk1.text_input("Data Analysis Skills", placeholder="Python (Pandas), SQL, Excel")
-        s_ml = sk2.text_input("Machine Learning Skills", placeholder="Scikit-Learn, TensorFlow")
-        s_ai = sk1.text_input("AI & Automation", placeholder="LLM, Selenium, Zapier")
-        s_biz = sk2.text_input("Business Skills", placeholder="Communication, Project Management")
-        
-        skills_data = {
-            'data_analysis': s_data, 'ml': s_ml, 'ai': s_ai, 'business': s_biz
-        }
+        st.subheader("6. Keahlian (Skills) (Max 5)")
+        skills_data = []
+        for i in range(st.session_state.skill_count):
+            st.markdown(f"**Skill Group #{i+1}**")
+            c1, c2 = st.columns([1, 2])
+            cat = c1.text_input(f"Kategori #{i+1} (Opsional)", placeholder="Contoh: Languages / Frameworks")
+            det = c2.text_input(f"Daftar Skill #{i+1}", placeholder="Contoh: Python, SQL, React, Streamlit")
+            
+            if det:
+                skills_data.append({'category': cat, 'details': det})
+
+        cs1, cs2 = st.columns([1, 5])
+        with cs1:
+            add_skill = st.form_submit_button("➕ Tambah Skill")
+        if add_skill:
+            manage_count('skill_count', 'add')
+            st.rerun()
 
         # --- CERTIFICATIONS & LANGUAGES ---
         st.markdown("---")
@@ -175,7 +195,7 @@ def main():
                 'education': education_data,
                 'experience': experience_data,
                 'projects': project_data,
-                'skills': skills_data,
+                'skills': skills_data, # Data skills sekarang berupa list dinamis
                 'certifications': cert_list,
                 'languages': lang_list
             }
