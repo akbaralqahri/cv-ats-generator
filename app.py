@@ -26,7 +26,7 @@ def main():
         7. **Download PDF**: Unduh hasil resume PDF Anda.
         """)
         
-        st.warning("⚠️ Fitur: Maksimal 5 item untuk Pendidikan, Pengalaman, Project, dan Skills agar muat di 1 halaman.")
+        st.warning("⚠️ Fitur: Maksimal 5 item untuk Pendidikan, Pengalaman, Project, Prestasi, dan Skills agar muat di 1 halaman.")
         
         # --- TAMBAHAN PESAN PRIVASI ---
         st.markdown("---")
@@ -129,9 +129,25 @@ def main():
             manage_count('proj_count', 'add')
             st.rerun()
 
+        # --- ACHIEVEMENTS (Dynamic) ---
+        st.markdown("---")
+        st.subheader("6. Prestasi (Achievements) (Max 5)")
+        ach_list = []
+        for i in range(st.session_state.ach_count):
+            ach = st.text_input(f"Prestasi #{i+1}", key=f"ach_{i}", placeholder="Juara 1 Hackathon Nasional 2024")
+            if ach:
+                ach_list.append(ach)
+        
+        ca1, ca2 = st.columns([1, 5])
+        with ca1:
+            add_ach = st.form_submit_button("➕ Tambah Prestasi")
+        if add_ach:
+            manage_count('ach_count', 'add')
+            st.rerun()
+
         # --- SKILLS (Dynamic) ---
         st.markdown("---")
-        st.subheader("6. Keahlian (Skills) (Max 5)")
+        st.subheader("7. Keahlian (Skills) (Max 5)")
         skills_data = []
         for i in range(st.session_state.skill_count):
             st.markdown(f"**Skill Group #{i+1}**")
@@ -154,7 +170,7 @@ def main():
         col_c, col_l = st.columns(2)
         
         with col_c:
-            st.subheader("7. Sertifikasi")
+            st.subheader("8. Sertifikasi")
             cert_list = []
             for i in range(st.session_state.cert_count):
                 cert = st.text_input(f"Sertifikat #{i+1}", key=f"cert_{i}")
@@ -164,7 +180,7 @@ def main():
                 st.rerun()
 
         with col_l:
-            st.subheader("8. Bahasa")
+            st.subheader("9. Bahasa")
             lang_list = []
             for i in range(st.session_state.lang_count):
                 lang = st.text_input(f"Bahasa #{i+1}", key=f"lang_{i}")
@@ -195,7 +211,8 @@ def main():
                 'education': education_data,
                 'experience': experience_data,
                 'projects': project_data,
-                'skills': skills_data, # Data skills sekarang berupa list dinamis
+                'achievements': ach_list, # Data Achievements
+                'skills': skills_data, 
                 'certifications': cert_list,
                 'languages': lang_list
             }

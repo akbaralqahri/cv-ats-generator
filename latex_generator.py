@@ -157,7 +157,7 @@ def generate_projects(project_list):
 
     latex = r"""
 %-----------PROJECTS-----------
-\section{\textbf{Key Projects}}
+\section{\textbf{Projects}}
 \resumeSubHeadingListStart
 """
     for proj in project_list:
@@ -171,6 +171,22 @@ def generate_projects(project_list):
                     latex += f"      \\resumeItem{{{escape_latex(item.strip())}}}\n"
             latex += "    \\resumeItemListEnd\n"
     latex += "\\resumeSubHeadingListEnd\n"
+    return latex
+
+def generate_achievements(ach_list):
+    if not any(a.strip() for a in ach_list):
+        return ""
+
+    latex = r"""
+%-----------ACHIEVEMENTS-----------
+\section{\textbf{Achievements}}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{
+"""
+    for ach in ach_list:
+        if ach.strip():
+            latex += f"    \\item{{$\\bullet$ {escape_latex(ach.strip())}}}\n"
+    latex += "  }\n\\end{itemize}\n"
     return latex
 
 def generate_skills(skills_list):
@@ -209,7 +225,7 @@ def generate_certifications(cert_list):
         return ""
 
     latex = r"""
-%-----------ACHIEVEMENTS-----------
+%-----------CERTIFICATIONS-----------
 \section{\textbf{Certifications \& Honors}}
 \begin{itemize}[leftmargin=0.15in, label={}]
   \small{
@@ -243,6 +259,7 @@ def generate_full_latex(data):
     doc += generate_education(data['education'])
     doc += generate_experience(data['experience'])
     doc += generate_projects(data['projects'])
+    doc += generate_achievements(data['achievements']) # Tambahan section achievements
     doc += generate_skills(data['skills'])
     doc += generate_certifications(data['certifications'])
     doc += generate_languages(data['languages'])
